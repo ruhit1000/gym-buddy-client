@@ -1,2 +1,35 @@
 @import "tailwindcss";
 @import "@heroui/styles";
+
+@theme {
+  --font-sans: "Inter", sans-serif;
+  --font-heading: "Montserrat", sans-serif;
+
+  --color-background: var(--bg-canvas);
+  --color-foreground: var(--text-main);
+  --color-card: var(--card-bg);
+  --color-border: var(--border-subtle);
+  
+  --color-brand: var(--brand-theme);
+  
+  --color-volt: #CCFF00;
+  --color-charcoal: #1A1A1A;
+}
+
+/* Light Mode Tokens */
+:root, :root[data-theme="light"] {
+  --bg-canvas: #F4F4F4;
+  --text-main: #1A1A1A;
+  --card-bg: #FFFFFF;
+  --border-subtle: #E5E7EB;
+  --brand-theme: #87AA00;
+}
+
+/* Dark Mode Overrides */
+:root[data-theme="dark"] {
+  --bg-canvas: #1A1A1A;
+  --text-main: #F4F4F4;
+  --card-bg: #2D2D2D;
+  --border-subtle: #374151;
+  --brand-theme: #CCFF00;
+}
