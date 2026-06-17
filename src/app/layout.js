@@ -12,8 +12,8 @@ const inter = Inter({
 });
 
 export const metadata = {
-  title: "Iron Pulse - Fitness & Gym Management Platform",
-  description: "Iron Pulse is a comprehensive fitness and gym management platform designed to streamline operations, enhance member engagement, and optimize business performance. Our platform offers a wide range of features including membership management, class scheduling, payment processing, and performance tracking. With Iron Pulse, gym owners and fitness professionals can efficiently manage their facilities, while members enjoy a seamless experience with easy access to classes, workouts, and personalized fitness plans. Join us in revolutionizing the fitness industry with Iron Pulse.",
+  title: "GYM BUDDY - Fitness & Gym Management Platform",
+  description: "Gym Buddy is a comprehensive fitness and gym management platform designed to streamline operations, enhance member engagement, and optimize business performance. Our platform offers a wide range of features including membership management, class scheduling, payment processing, and performance tracking. With Gym Buddy, gym owners and fitness professionals can efficiently manage their facilities, while members enjoy a seamless experience with easy access to classes, workouts, and personalized fitness plans. Join us in revolutionizing the fitness industry with Gym Buddy.",
 };
 
 export default function RootLayout({ children }) {

@@ -25,7 +25,7 @@ const MainNavbar = ({
       <div className="max-w-7xl mx-auto flex items-center justify-between">
         {/* Left: Logo (Now using the universal brand color) */}
         <span className="font-heading font-black text-4xl tracking-wider select-none text-brand transition-colors duration-300">
-          IRON PULSE
+          GYM BUDDY
         </span>
 
         {/* Middle: Navigation Links */}

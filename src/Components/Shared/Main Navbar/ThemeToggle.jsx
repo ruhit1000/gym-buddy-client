@@ -63,7 +63,7 @@ const ThemeToggle = () => {
         /* Responsive Framework Dimensions */
         h-6 w-11 md:h-8 md:w-14
         
-        ${isDark ? "bg-[#CCFF00]/20 border-[#CCFF00]" : "bg-[#2D2D2D] border-[#2D2D2D]"}
+        ${isDark ? "bg-volt/20 border-volt" : "bg-[#2D2D2D] border-[#2D2D2D]"}
       `}
     >
       {/* Sliding Switch Thumb */}
@@ -74,11 +74,11 @@ const ThemeToggle = () => {
           
           /* Responsive Thumb Sizing & Position */
           h-5 w-5 md:h-7 md:w-7
-          ${isDark ? "translate-x-5 md:translate-x-6 bg-[#CCFF00]" : "translate-x-0 bg-[#F4F4F4]"}
+          ${isDark ? "translate-x-5 md:translate-x-6 bg-volt" : "translate-x-0 bg-[#F4F4F4]"}
         `}
       >
         {isDark ? (
-          <Moon className="size-3 md:size-4 text-[#1A1A1A] font-bold" />
+          <Moon className="size-3 md:size-4 text-charcoal font-bold" />
         ) : (
           <Sun className="size-3 md:size-4 text-[#2D2D2D]" />
         )}
