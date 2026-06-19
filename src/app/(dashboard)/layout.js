@@ -1,5 +1,5 @@
+import DashboardNavbar from '@/Components/Dashboard/Trainer/DashboardNavbar';
 import React from 'react';
-import DashboardNavbar from "@/Components/Dashboard/DashboardNavbar";
 
 export const metadata = {
     title: 'Dashboard - Gym Buddy',
