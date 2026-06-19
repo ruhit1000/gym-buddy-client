@@ -1,12 +1,15 @@
 import MainNavbar from "@/Components/Shared/Main Navbar/MainNavbar";
 import MainFooter from "@/Components/Shared/MainFooter";
+import { getUserSession } from "@/lib/core/session";
 
-export default function MainLayout({ children }) {
-    return (
-        <div>
-            <MainNavbar />
-            {children}
-            <MainFooter />
-        </div>
-    )
-}
+const MainLayout = ({ children }) => {
+  
+  return (
+    <div>
+      <MainNavbar/>
+      {children}
+      <MainFooter />
+    </div>
+  );
+};
+export default MainLayout;

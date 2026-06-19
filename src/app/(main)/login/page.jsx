@@ -12,19 +12,32 @@ import {
   TextField,
   FieldError,
   InputGroup,
+  toast,
 } from "@heroui/react";
 import { EyeSlash } from "@gravity-ui/icons";
 import { Icon } from "@iconify/react";
+import { authClient } from "@/lib/auth-client";
+import { useRouter } from "next/navigation";
 
 const LoginPage = () => {
+  const router = useRouter();
   const [isVisible, setIsVisible] = useState(false);
 
-  const onSubmit = (e) => {
+  const onSubmit = async (e) => {
     e.preventDefault();
     const formData = new FormData(e.target);
     const userData = Object.fromEntries(formData.entries());
-    console.log("Form submitted:", userData);
-
+    
+    const { data, error } = await authClient.signIn.email({
+      email: userData.email,
+      password: userData.password,
+    })
+    if (error) {
+      toast.danger(error.message);
+    } else {
+      toast.success("Logged in successfully!");
+      router.push("/");
+    }
   }
 
   return (

@@ -11,13 +11,18 @@ import {
   TextField,
   FieldError,
   InputGroup,
+  toast,
 } from "@heroui/react";
 import Image from "next/image";
 import { EyeSlash } from "@gravity-ui/icons";
+import { authClient } from "@/lib/auth-client";
+import { useRouter } from "next/navigation";
 
 const RegisterPage = () => {
+  const router = useRouter();
   const [isVisible, setIsVisible] = useState(false);
   const [imagePreview, setImagePreview] = useState(null);
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const handleImageChange = (e) => {
     const file = e.target.files[0];
@@ -26,24 +31,78 @@ const RegisterPage = () => {
     }
   };
 
-  const onSubmit = (e) => {
-    e.preventDefault();
-    const formData = new FormData(e.currentTarget);
-    const data = {};
+  const uploadToImgBB = async (file) => {
+    const apiKey = process.env.NEXT_PUBLIC_IMAGE_UPLOAD_API;
+    if (!apiKey) {
+      console.error("ImgBB API key is missing from environment variables.");
+      return null;
+    }
 
-    formData.forEach((value, key) => {
-      // Don't append raw file object to string data dict
-      if (key !== "profilePhoto") {
-        data[key] = value.toString();
+    const formData = new FormData();
+    formData.append("image", file);
+
+    try {
+      const response = await fetch(`https://api.imgbb.com/1/upload?key=${apiKey}`, {
+        method: "POST",
+        body: formData,
+      });
+
+      const resData = await response.json();
+      if (resData.success) {
+        return resData.data.url;
+      } else {
+        console.error("ImgBB upload error response:", resData.error);
+        return null;
       }
-    });
+    } catch (err) {
+      console.error("Failed to upload image to ImgBB:", err);
+      return null;
+    }
+  };
 
-    console.log(`Registration attempt with: ${JSON.stringify(data, null, 2)}`);
+  const onSubmit = async (e) => {
+    e.preventDefault();
+    if (isSubmitting) return;
+    setIsSubmitting(true);
+
+    const targetForm = e.target;
+    const formData = new FormData(targetForm);
+    const userData = Object.fromEntries(formData.entries());
+    const profileFile = formData.get("profilePhoto");
+
+    let hostedImageUrl = "";
+
+    if (profileFile && profileFile.size > 0) {
+      const uploadedUrl = await uploadToImgBB(profileFile);
+      if (uploadedUrl) {
+        hostedImageUrl = uploadedUrl;
+      }
+    }
+
+    try {
+      const { data, error } = await authClient.signUp.email({
+        email: userData.email,
+        password: userData.password,
+        name: userData.fullName,
+        image: hostedImageUrl || undefined,
+      });
+
+      if (error) {
+        toast.danger(error.message);
+      } else {
+        toast.success("Account created successfully:", data);
+        router.push("/login");
+      }
+    } catch (err) {
+      console.error("Auth submit execution error:", err);
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
     <section className="relative min-h-screen w-full flex items-center justify-center bg-background px-6 py-12 transition-colors duration-300">
-      {/* Background Layer mimicking reference layout */}
+      {/* Background Layer */}
       <div className="absolute inset-0 z-0">
         <div className="absolute inset-y-0 right-0 w-1/12 bg-[url('/dotted-pattern.png')] bg-repeat-y opacity-20 dark:opacity-30" />
         <div className="absolute inset-0 bg-linear-to-r from-background via-background/90 to-background/50 transition-colors duration-300" />
@@ -79,6 +138,7 @@ const RegisterPage = () => {
                 accept="image/*"
                 className="hidden"
                 onChange={handleImageChange}
+                disabled={isSubmitting}
               />
               {imagePreview ? (
                 <Image
@@ -112,6 +172,7 @@ const RegisterPage = () => {
               <Input
                 placeholder="Enter your full name"
                 className="font-sans w-full text-base transition-colors duration-300"
+                disabled={isSubmitting}
               />
             </InputGroup>
             <FieldError className="font-sans text-xs pt-1.5" />
@@ -140,12 +201,13 @@ const RegisterPage = () => {
               <Input
                 placeholder="name@example.com"
                 className="font-sans w-full text-base transition-colors duration-300"
+                disabled={isSubmitting}
               />
             </InputGroup>
             <FieldError className="font-sans text-xs pt-1.5" />
           </TextField>
 
-          {/* Password Field with Validation and Toggle */}
+          {/* Password Field */}
           <TextField
             isRequired
             minLength={8}
@@ -169,6 +231,7 @@ const RegisterPage = () => {
                 placeholder="••••••••"
                 type={isVisible ? "text" : "password"}
                 className="w-full font-sans text-base transition-colors duration-300 pr-12"
+                disabled={isSubmitting}
               />
               <InputGroup.Suffix className="absolute right-15 pr-1 text-foreground/60">
                 <Button
@@ -178,12 +241,9 @@ const RegisterPage = () => {
                   variant="ghost"
                   className="hover:text-brand transition-colors duration-200"
                   onPress={() => setIsVisible(!isVisible)}
+                  disabled={isSubmitting}
                 >
-                  {isVisible ? (
-                    <Eye className="size-4" />
-                  ) : (
-                    <EyeSlash className="size-4" />
-                  )}
+                  {isVisible ? <Eye className="size-4" /> : <EyeSlash className="size-4" />}
                 </Button>
               </InputGroup.Suffix>
             </InputGroup>
@@ -196,9 +256,10 @@ const RegisterPage = () => {
           {/* Register Submit Button */}
           <Button
             type="submit"
-            className="w-full bg-brand hover:opacity-90 text-background font-heading text-xs font-bold uppercase tracking-widest px-6 py-4 rounded-xl transition-all duration-200 cursor-pointer shadow-md mt-4"
+            disabled={isSubmitting}
+            className="w-full bg-brand hover:opacity-90 text-background font-heading text-xs font-bold uppercase tracking-widest px-6 py-4 rounded-xl transition-all duration-200 cursor-pointer shadow-md mt-4 disabled:opacity-50"
           >
-            Register Now
+            {isSubmitting ? "Registering..." : "Register Now"}
           </Button>
         </Form>
 

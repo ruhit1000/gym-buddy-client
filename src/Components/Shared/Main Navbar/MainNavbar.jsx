@@ -1,24 +1,43 @@
 "use client";
 import React, { useState } from "react";
 import Image from "next/image";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import Link from "next/link";
 import ThemeToggle from "./ThemeToggle";
+import { authClient } from "@/lib/auth-client";
 
-const MainNavbar = ({
-  isAuthenticated,
-  userRole,
-  userProfilePic,
-  onLogout,
-}) => {
+const MainNavbar = () => {
+  const router = useRouter();
+  const { data: session, isPending } = authClient.useSession();
   const pathname = usePathname();
   const [isOpen, setIsOpen] = useState(false);
+
+  const user = session?.user;
+  const isAuthenticated = !!user;
+  const userRole = user?.role || null;
+  const userProfilePic = user?.image || null;
 
   const navLinks = [
     { name: "Home", path: "/" },
     { name: "All Classes", path: "/classes" },
     { name: "Community Forum", path: "/forum" },
   ];
+
+  const handleLogout = async () => {
+    await authClient.signOut({
+      fetchOptions: {
+        onSuccess: () => {
+          router.refresh();
+        },
+      },
+    });
+  };
+
+  if (isPending) {
+    return (
+      <nav className="bg-background border-b border-border h-18.25 w-full" />
+    );
+  }
 
   return (
     <nav className="bg-background/80 backdrop-blur-md border-b border-border sticky top-0 z-50 px-6 py-4 font-sans text-foreground transition-colors duration-300">
@@ -45,9 +64,9 @@ const MainNavbar = ({
           {isAuthenticated && (
             <Link
               href={`/dashboard/${userRole}`}
-              className={`text-brand hover:opacity-80 transition-opacity duration-200 text-sm font-semibold tracking-wide ${
+              className={`hover:text-brand transition-colors duration-200 text-sm tracking-wide ${
                 pathname === `/dashboard/${userRole}`
-                  ? "underline decoration-2"
+                  ? "text-brand font-bold"
                   : ""
               }`}
             >
@@ -58,7 +77,7 @@ const MainNavbar = ({
 
         {/* Right side controls */}
         <div className="flex items-center space-x-4">
-          <ThemeToggle />
+          {/* <ThemeToggle /> */}
 
           {/* User Authentication / Profile Area */}
           <div className="hidden md:flex items-center space-x-4">
@@ -90,7 +109,7 @@ const MainNavbar = ({
                   )}
                 </div>
                 <button
-                  onClick={onLogout}
+                  onClick={handleLogout}
                   className="bg-transparent border border-border hover:border-red-500 hover:text-red-500 text-xs uppercase tracking-widest px-4 py-2 rounded transition-colors duration-200 font-bold cursor-pointer"
                 >
                   Logout
@@ -158,8 +177,10 @@ const MainNavbar = ({
             <Link
               href={`/dashboard/${userRole}`}
               onClick={() => setIsOpen(false)}
-              className={`py-1 text-sm text-brand ${
-                pathname === `/dashboard/${userRole}` ? "font-bold" : ""
+              className={`py-1 text-sm hover:text-brand transition-colors ${
+                pathname === `/dashboard/${userRole}`
+                  ? "text-brand font-bold"
+                  : ""
               }`}
             >
               Dashboard
@@ -170,7 +191,7 @@ const MainNavbar = ({
               <button
                 onClick={() => {
                   setIsOpen(false);
-                  onLogout();
+                  handleLogout();
                 }}
                 className="w-full text-center bg-red-600 hover:bg-red-700 text-white text-xs uppercase tracking-widest py-2.5 rounded font-bold cursor-pointer"
               >

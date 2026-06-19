@@ -1,5 +1,6 @@
 import { Inter, Montserrat } from "next/font/google";
 import "./globals.css";
+import { Toast } from "@heroui/react";
 
 const montserrat = Montserrat({
   variable: "--font-montserrat",
@@ -20,10 +21,12 @@ export default function RootLayout({ children }) {
   return (
     <html
       lang="en"
+      data-theme="dark"
       className={`${inter.variable} ${montserrat.variable} h-full antialiased`}
     >
       <body className="min-h-full flex flex-col">
         <main>{children}</main>
+        <Toast.Provider />
       </body>
     </html>
   );
