@@ -14,7 +14,7 @@ const MainNavbar = () => {
 
   const user = session?.user;
   const isAuthenticated = !!user;
-  const userRole = user?.role || null;
+  const userRole = user?.role || "user";
   const userProfilePic = user?.image || null;
 
   const navLinks = [

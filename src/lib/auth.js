@@ -13,4 +13,29 @@ export const auth = betterAuth({
     enabled: true,
     autoSignIn: false,
   },
+  socialProviders: {
+    google: {
+      clientId: process.env.GOOGLE_CLIENT_ID,
+      clientSecret: process.env.GOOGLE_CLIENT_SECRET,
+    },
+  },
+  user: {
+    additionalFields: {
+      role: {
+        type: "string",
+        required: false,
+        defaultValue: "user",
+      },
+      status: {
+        type: "string",
+        required: false,
+        defaultValue: "active",
+      },
+      trainerApplication: {
+        type: "string",
+        required: false,
+        defaultValue: "none",
+      },
+    },
+  },
 });

@@ -27,18 +27,24 @@ const LoginPage = () => {
     e.preventDefault();
     const formData = new FormData(e.target);
     const userData = Object.fromEntries(formData.entries());
-    
+
     const { data, error } = await authClient.signIn.email({
       email: userData.email,
       password: userData.password,
-    })
+    });
     if (error) {
       toast.danger(error.message);
     } else {
       toast.success("Logged in successfully!");
       router.push("/");
     }
-  }
+  };
+
+  const handleGoogleSignIn = async () => {
+    const data = await authClient.signIn.social({
+      provider: "google",
+    });
+  };
 
   return (
     <section className="relative min-h-screen w-full flex items-center justify-center bg-background px-6 transition-colors duration-300">
@@ -164,7 +170,11 @@ const LoginPage = () => {
             </div>
           </div>
 
-          <Button className="w-full" variant="tertiary">
+          <Button
+            className="w-full"
+            variant="tertiary"
+            onClick={handleGoogleSignIn}
+          >
             <Icon icon="devicon:google" />
             Sign in with Google
           </Button>
