@@ -2,9 +2,10 @@
 
 import React from "react";
 import Image from "next/image";
-import { Edit2, Trash2, Users, Calendar, Clock, BarChart } from "lucide-react";
+import { Edit2, Users, Calendar, Clock, BarChart } from "lucide-react";
 import { Button } from "@heroui/react";
 import { DeleteClassAlert } from "@/Components/Shared/DeleteClassAlert";
+import { UpdateClass } from "./UpdateClass";
 
 const TrainerClassRowCard = ({ classItem }) => {
   const {
@@ -100,15 +101,7 @@ const TrainerClassRowCard = ({ classItem }) => {
         </Button>
 
         {/* Update Trigger */}
-        <Button
-          isIconOnly
-          aria-label="Update class settings"
-          size="sm"
-          variant="ghost"
-          className="hover:bg-amber-500/10 hover:text-amber-500 border border-border/80 text-foreground/60 rounded-xl cursor-pointer"
-        >
-          <Edit2 className="size-3.5" />
-        </Button>
+        <UpdateClass classItem={classItem} />
 
         {/* Delete Trigger */}
         <DeleteClassAlert classId={classItem._id} className={classItem.className} />
