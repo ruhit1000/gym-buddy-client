@@ -25,10 +25,12 @@ import {
 } from "lucide-react";
 import { createClass } from "@/lib/action/classes";
 import { authClient } from "@/lib/auth-client";
+import { useRouter } from "next/navigation";
 
 const AddClassForm = () => {
   const [imagePreview, setImagePreview] = useState(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const router = useRouter();
 
   const { data: session } = authClient.useSession();
   const trainerProfile = session?.user || null;
@@ -76,12 +78,10 @@ const AddClassForm = () => {
     const imageFile = formData.get("classImage");
 
     let hostedImageUrl = "";
-    // Image is optional: only trigger network upload upload pipelines if file exists
     if (imageFile && imageFile.size > 0) {
       hostedImageUrl = await uploadToImgBB(imageFile);
     }
 
-    // Safely structure and join user-friendly scheduling parameters
     const combinedSchedule =
       rawData.scheduleDays && rawData.scheduleTime
         ? `${rawData.scheduleDays} • ${rawData.scheduleTime}`
@@ -106,6 +106,7 @@ const AddClassForm = () => {
     try {
       const res = await createClass(classDocument);
       toast.info(res.message);
+      router.push("/dashboard/trainer/my-classes");
     } catch (err) {
       console.error("Database CRUD push failed:", err);
     } finally {
