@@ -28,3 +28,7 @@ export const getAllCategories = async () => {
 export const getMyClasses = async (trainerId) => {
   return await serverFetch(`classes/my-classes?trainerId=${trainerId}`);
 };
+
+export const getClassById = async (id) => {
+  return await serverFetch(`classes/${id}`);
+};
