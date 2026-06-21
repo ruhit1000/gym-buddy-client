@@ -3,10 +3,17 @@ import { getClassById } from "@/lib/api/classes";
 import BookingCard from "@/Components/ClassDetails/BookingCard";
 import ClassHero from "@/Components/ClassDetails/ClassHero";
 import ClassOverview from "@/Components/ClassDetails/ClassOverview";
+import { getUserSession } from "@/lib/core/session";
+import { redirect } from "next/navigation";
 
 const ClassDetailsPage = async ({ params }) => {
   const { id } = await params;
   const res = await getClassById(id);
+  const user = await getUserSession();
+
+  if (!user) {
+    return redirect(`/login?redirectTo=/classes/${id}`);
+  }
 
   const classData = res?.data || res || {};
 

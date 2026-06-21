@@ -16,13 +16,16 @@ import {
 import Image from "next/image";
 import { EyeSlash } from "@gravity-ui/icons";
 import { authClient } from "@/lib/auth-client";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 
 const RegisterPage = () => {
   const router = useRouter();
   const [isVisible, setIsVisible] = useState(false);
   const [imagePreview, setImagePreview] = useState(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
+
+  const searchParams = useSearchParams();
+  const redirectTo = searchParams.get("redirectTo") || "/";
 
   const handleImageChange = (e) => {
     const file = e.target.files[0];
@@ -268,7 +271,7 @@ const RegisterPage = () => {
           <p className="font-sans text-sm text-foreground/80 transition-colors duration-300">
             Already have an account?{" "}
             <Link
-              href="/login"
+              href={`/login?redirectTo=${redirectTo}`}
               className="text-brand font-semibold hover:underline"
             >
               Login here

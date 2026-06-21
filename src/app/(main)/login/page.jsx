@@ -17,11 +17,14 @@ import {
 import { EyeSlash } from "@gravity-ui/icons";
 import { Icon } from "@iconify/react";
 import { authClient } from "@/lib/auth-client";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 
 const LoginPage = () => {
   const router = useRouter();
   const [isVisible, setIsVisible] = useState(false);
+
+  const searchParams = useSearchParams();
+  const redirectTo = searchParams.get("redirectTo") || "/";
 
   const onSubmit = async (e) => {
     e.preventDefault();
@@ -36,7 +39,7 @@ const LoginPage = () => {
       toast.danger(error.message);
     } else {
       toast.success("Logged in successfully!");
-      router.push("/");
+      router.push(redirectTo);
     }
   };
 
@@ -182,7 +185,7 @@ const LoginPage = () => {
           <p className="font-sans text-sm text-foreground/80 transition-colors duration-300">
             Don't have an account?{" "}
             <Link
-              href="/register"
+              href={`/register?redirectTo=${redirectTo}`}
               className="text-brand font-semibold hover:underline"
             >
               Sign up
