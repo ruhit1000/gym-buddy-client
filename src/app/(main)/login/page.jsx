@@ -2,7 +2,6 @@
 
 import React, { useState } from "react";
 import Link from "next/link";
-import { FcGoogle } from "react-icons/fc";
 import { Mail, Lock, Eye } from "lucide-react";
 import {
   Button,

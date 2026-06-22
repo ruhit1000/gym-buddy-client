@@ -1,11 +1,14 @@
 import React from 'react';
-import { getUserSession } from '@/lib/core/session';
-import { Hourglass, XCircle, Sparkles } from 'lucide-react';
+import { getServerUser } from '@/lib/core/session';
+import { Hourglass, XCircle, Sparkles, MessageSquare } from 'lucide-react';
 import Link from 'next/link';
 
 const ApplyForTrainerPage = async () => {
-    const user = await getUserSession();
-    const status = user?.trainerApplication || "none"; 
+    const res = await getServerUser();
+    const user = res?.success ? res.data : null;
+    
+    const status = user?.trainerApplication || "none";
+    const adminFeedback = user?.trainerApplicationDetails?.feedback;
 
     return (
         <div className="w-full min-h-[80vh] flex items-center justify-center bg-background text-foreground p-6 transition-colors duration-300">
@@ -23,7 +26,6 @@ const ApplyForTrainerPage = async () => {
                         <p className="text-sm text-foreground/60 mb-8 leading-relaxed">
                             Share your fitness expertise, build your brand, and manage client training sessions through our professional dashboard toolkit.
                         </p>
-                        {/* REMOVED cursor-pointer */}
                         <Link 
                             href="/dashboard/user/apply/form"
                             className="w-full bg-brand hover:opacity-90 text-background font-heading text-sm font-bold py-3.5 rounded-xl transition-all shadow-md flex items-center justify-center text-center"
@@ -51,7 +53,7 @@ const ApplyForTrainerPage = async () => {
                     </div>
                 )}
 
-                {/* STATE 3: REJECTED - Denied with re-apply option */}
+                {/* STATE 3: REJECTED - Denied with feedback display & re-apply option */}
                 {status === "rejected" && (
                     <div className="flex flex-col items-center">
                         <div className="size-16 bg-destructive/10 text-destructive rounded-2xl flex items-center justify-center mb-6">
@@ -60,10 +62,19 @@ const ApplyForTrainerPage = async () => {
                         <h1 className="font-heading font-black text-2xl uppercase tracking-wider mb-2 text-destructive">
                             Application Declined
                         </h1>
-                        <p className="text-sm text-foreground/60 mb-8 leading-relaxed">
-                            Unfortunately, your request did not meet our verification criteria at this time. You can review your profile information and re-apply below.
+                        <p className="text-sm text-foreground/60 mb-6 leading-relaxed">
+                            Unfortunately, your request did not meet our verification criteria at this time. Please check the feedback below.
                         </p>
-                        {/* REMOVED cursor-pointer */}
+
+                        <div className="w-full text-left bg-destructive/[0.02] border border-destructive/20 rounded-xl p-4 mb-8 text-sm">
+                            <div className="flex items-center gap-2 text-destructive font-semibold mb-1 text-xs uppercase tracking-wider font-heading">
+                                <MessageSquare className="size-3.5" /> Admin Feedback:
+                            </div>
+                            <p className="text-foreground/80 leading-relaxed italic">
+                                "{adminFeedback || "No detailed feedback was provided by the reviewer."}"
+                            </p>
+                        </div>
+
                         <Link 
                             href="/dashboard/user/apply/form"
                             className="w-full bg-transparent hover:bg-foreground/5 border border-border text-foreground font-heading text-sm font-bold py-3.5 rounded-xl transition-all flex items-center justify-center text-center"

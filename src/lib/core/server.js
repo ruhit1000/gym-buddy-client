@@ -42,9 +42,20 @@ export const serverDelete = async (path) => {
 };
 
 export const protectedFetch = async (path) => {
-  const res = await fetch(`${baseUrl}/api/${path}`, {
-    cache: "no-store",
-    headers: await authHeader(),
-  });
-  return res.json();
-}
+  try {
+    const res = await fetch(`${baseUrl}/api/${path}`, {
+      cache: "no-store",
+      headers: await authHeader(),
+    });
+
+    if (!res.ok) {
+      console.error(`Fetch failed with status: ${res.status}`);
+      return { success: false, error: `Status ${res.status}` };
+    }
+
+    return await res.json();
+  } catch (error) {
+    console.error("Network or Parsing error in protectedFetch:", error);
+    return { success: false, error: "Network error" };
+  }
+};

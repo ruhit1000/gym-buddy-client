@@ -87,7 +87,7 @@ const RegisterPage = () => {
         email: userData.email,
         password: userData.password,
         name: userData.fullName,
-        image: hostedImageUrl || null,
+        image: hostedImageUrl || undefined,
       });
 
       if (error) {

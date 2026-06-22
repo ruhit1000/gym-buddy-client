@@ -2,6 +2,7 @@
 import { headers } from "next/headers"
 import { auth } from "../auth"
 import { redirect } from "next/navigation";
+import { protectedFetch } from "./server";
 
 export const getUserSession = async () => {
     const session = await auth.api.getSession({
@@ -9,6 +10,10 @@ export const getUserSession = async () => {
     })
     return session?.user || null;
 };
+
+export const getServerUser = async () => {
+    return await protectedFetch("users/me")
+}
 
 export const getUserToken = async () => {
     const session = await auth.api.getSession({
