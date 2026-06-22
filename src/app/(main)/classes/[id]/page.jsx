@@ -5,6 +5,7 @@ import ClassHero from "@/Components/ClassDetails/ClassHero";
 import ClassOverview from "@/Components/ClassDetails/ClassOverview";
 import { getUserSession } from "@/lib/core/session";
 import { redirect } from "next/navigation";
+import { isFavourite } from "@/lib/api/favourites";
 
 const ClassDetailsPage = async ({ params }) => {
   const { id } = await params;
@@ -14,6 +15,8 @@ const ClassDetailsPage = async ({ params }) => {
   if (!user) {
     return redirect(`/login?redirectTo=/classes/${id}`);
   }
+
+  const isUserFavourite  = await isFavourite(id);
 
   const classData = res?.data || res || {};
 
@@ -27,7 +30,7 @@ const ClassDetailsPage = async ({ params }) => {
             <ClassOverview data={classData} />
           </div>
           <div className="lg:col-span-1 relative">
-            <BookingCard data={classData} />
+            <BookingCard data={classData} isUserFavourite={isUserFavourite.isFavourite} />
           </div>
         </div>
       </div>

@@ -1,15 +1,47 @@
 "use client";
 
-import React from "react";
+import React, { useState } from "react";
 import { Clock, Users, Star, Heart, Zap } from "lucide-react";
+import { useRouter } from "next/navigation";
+import { favouriteToggle } from "@/lib/api/favourites"; // Update path if needed
 
-export default function BookingCard({ data }) {
+export default function BookingCard({ data, isUserFavourite }) {
+  const router = useRouter();
+  
+  // 1. Local state initialized by server prop for optimistic UI updates
+  const [isFav, setIsFav] = useState(isUserFavourite);
+  const [loading, setLoading] = useState(false);
 
   const totalSlots = data?.totalSlots || 0;
   const bookingCount = data?.bookingCount || 0;
   const remainingSlots = Math.max(0, totalSlots - bookingCount);
-
   const targetIntensity = Math.min(5, Math.max(1, data?.intensity || 3));
+
+  // 2. Handle Favorite State Toggle Action
+  const handleFavouriteToggle = async () => {
+    if (loading || !data?._id) return;
+    setLoading(true);
+    
+    // Optimistic UI update
+    setIsFav(prev => !prev);
+
+    try {
+      const res = await favouriteToggle(data._id);
+      
+      if (res?.success) {
+        setIsFav(res.isFavorited);
+        router.refresh(); // Refresh server side props context safely
+      } else {
+        // Revert UI update if backend fails
+        setIsFav(isUserFavourite);
+      }
+    } catch (error) {
+      console.error("Failed to toggle favorite:", error);
+      setIsFav(isUserFavourite); // Revert UI update on error
+    } finally {
+      setLoading(false);
+    }
+  };
 
   return (
     <div className="sticky top-24 bg-card border border-border rounded-2xl p-6 shadow-xl font-sans transition-colors duration-300">
@@ -71,8 +103,15 @@ export default function BookingCard({ data }) {
           {totalSlots > 0 && remainingSlots === 0 ? "Full" : "Book Now"}{" "}
           <Zap className="size-4" />
         </button>
-        <button className="w-full bg-transparent hover:bg-foreground/5 border border-border text-foreground font-heading text-sm font-bold py-3.5 rounded-xl flex items-center justify-center gap-2 transition-all cursor-pointer">
-          Add to Favorites <Heart className="size-4" />
+        
+        {/* Toggle Button Layout */}
+        <button 
+          onClick={handleFavouriteToggle}
+          disabled={loading}
+          className="w-full bg-transparent hover:bg-foreground/5 border border-border text-foreground font-heading text-sm font-bold py-3.5 rounded-xl flex items-center justify-center gap-2 transition-all cursor-pointer disabled:opacity-50"
+        >
+          <Heart className={`size-4 transition-transform active:scale-75 ${isFav ? "fill-brand text-brand" : ""}`} />
+          {isFav ? "Remove From Favorites" : "Add to Favorites"}
         </button>
       </div>
 
