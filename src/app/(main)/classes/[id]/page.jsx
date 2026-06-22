@@ -30,7 +30,7 @@ const ClassDetailsPage = async ({ params }) => {
             <ClassOverview data={classData} />
           </div>
           <div className="lg:col-span-1 relative">
-            <BookingCard data={classData} isUserFavourite={isUserFavourite.isFavourite} />
+            <BookingCard data={classData} isUserFavourite={isUserFavourite.isFavorited} />
           </div>
         </div>
       </div>

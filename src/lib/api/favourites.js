@@ -7,3 +7,7 @@ export const isFavourite = async (classId) => {
 export const favouriteToggle = async (classId) => {
     return serverMutation(`favorites/toggle`, "POST", { classId });
 }
+
+export const getUserFavourites = async () => {
+    return protectedFetch(`favorites/my-favorites`);
+}

@@ -3,12 +3,11 @@
 import React, { useState } from "react";
 import { Clock, Users, Star, Heart, Zap } from "lucide-react";
 import { useRouter } from "next/navigation";
-import { favouriteToggle } from "@/lib/api/favourites"; // Update path if needed
+import { favouriteToggle } from "@/lib/api/favourites";
 
 export default function BookingCard({ data, isUserFavourite }) {
   const router = useRouter();
   
-  // 1. Local state initialized by server prop for optimistic UI updates
   const [isFav, setIsFav] = useState(isUserFavourite);
   const [loading, setLoading] = useState(false);
 
@@ -17,12 +16,10 @@ export default function BookingCard({ data, isUserFavourite }) {
   const remainingSlots = Math.max(0, totalSlots - bookingCount);
   const targetIntensity = Math.min(5, Math.max(1, data?.intensity || 3));
 
-  // 2. Handle Favorite State Toggle Action
   const handleFavouriteToggle = async () => {
     if (loading || !data?._id) return;
     setLoading(true);
     
-    // Optimistic UI update
     setIsFav(prev => !prev);
 
     try {
@@ -30,14 +27,13 @@ export default function BookingCard({ data, isUserFavourite }) {
       
       if (res?.success) {
         setIsFav(res.isFavorited);
-        router.refresh(); // Refresh server side props context safely
+        router.refresh();
       } else {
-        // Revert UI update if backend fails
         setIsFav(isUserFavourite);
       }
     } catch (error) {
       console.error("Failed to toggle favorite:", error);
-      setIsFav(isUserFavourite); // Revert UI update on error
+      setIsFav(isUserFavourite);
     } finally {
       setLoading(false);
     }
