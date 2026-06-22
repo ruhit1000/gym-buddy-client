@@ -1,11 +1,9 @@
 import React from 'react';
-import { getUserSession } from '@/lib/core/session';
 import { getMyClasses } from '@/lib/api/classes';
 import TrainerClassesList from '@/Components/Dashboard/Trainer/TrainerClassesList';
 
 const TrainerClassesPage = async () => {
-    const trainer = await getUserSession();
-    const classes = (await getMyClasses(trainer?.id)) || [];
+    const classesData = await getMyClasses();
     
     return (
         <div className="w-full bg-background text-foreground transition-colors duration-300">
@@ -18,7 +16,7 @@ const TrainerClassesPage = async () => {
                 </p>
             </div>
             
-            <TrainerClassesList initialClasses={classes} />
+            <TrainerClassesList initialClasses={classesData} />
         </div>
     );
 };

@@ -1,9 +1,13 @@
 import React from 'react';
-import { getUserSession } from '@/lib/core/session';
+import { getUserSession, requireRole } from '@/lib/core/session';
 import TrainerStatsGrid from '@/Components/Dashboard/Trainer/TrainerStatsGrid';
+import { redirect } from 'next/navigation';
 
 const TrainerDashboardOverview = async () => {
-    const user = await getUserSession();
+    const user = await requireRole('trainer');
+    if (!user) {
+        return redirect("/unauthorized");
+    }
 
     return (
         <div className="w-full bg-background text-foreground transition-colors duration-300">

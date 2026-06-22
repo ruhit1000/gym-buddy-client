@@ -1,4 +1,4 @@
-import { serverFetch } from "../core/server";
+import { protectedFetch, serverFetch } from "../core/server";
 
 export const getAllClasses = async (options = {}) => {
   const { search, categories, page, limit } = options;
@@ -25,10 +25,10 @@ export const getAllCategories = async () => {
   return serverFetch("categories");
 };
 
-export const getMyClasses = async (trainerId) => {
-  return await serverFetch(`classes/my-classes?trainerId=${trainerId}`);
+export const getMyClasses = async () => {
+  return await protectedFetch(`classes/my-classes`);
 };
 
 export const getClassById = async (id) => {
-  return await serverFetch(`classes/${id}`);
+  return await protectedFetch(`classes/${id}`);
 };
