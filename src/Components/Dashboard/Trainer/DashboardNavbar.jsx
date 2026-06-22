@@ -19,6 +19,7 @@ import {
   Search,
   Bell
 } from "lucide-react";
+import ThemeToggle from "@/Components/Shared/Main Navbar/ThemeToggle";
 
 const DashboardNavbar = ({ children }) => {
   const pathname = usePathname();
@@ -160,11 +161,7 @@ const DashboardNavbar = ({ children }) => {
           {/* Right Profile Actions Segment */}
           <div className="flex items-center space-x-6">
             
-            {/* Quick Status Pill/Indicators */}
-            <div className="flex items-center space-x-3 text-xs font-heading font-black bg-background border border-border px-3 py-1.5 rounded-lg text-foreground/70">
-              <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
-              <span className="uppercase tracking-wider">Server Sync</span>
-            </div>
+            <ThemeToggle />
 
             {/* Notification Badge Anchor */}
             <button className="relative p-2 text-foreground/60 hover:text-brand transition-colors duration-200 cursor-pointer">
