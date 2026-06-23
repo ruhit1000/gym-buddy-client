@@ -11,3 +11,7 @@ export const deleteClass = async (classId) => {
 export const updateClass = async (classId, updatedData) => {
     return serverMutation(`classes/${classId}`, "PATCH", updatedData);
 }
+
+export const handleClassStatusAction = async (classId, action) => {
+    return await serverMutation("classes/manage/review", "PATCH", { classId, action });
+};

@@ -32,3 +32,7 @@ export const getMyClasses = async () => {
 export const getClassById = async (id) => {
   return await protectedFetch(`classes/${id}`);
 };
+
+export const getSubmittedClasses = async () => {
+    return await protectedFetch('classes/manage');
+};
