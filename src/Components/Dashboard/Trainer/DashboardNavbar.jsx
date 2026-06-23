@@ -30,13 +30,13 @@ const DashboardNavbar = ({ children }) => {
   const userRole = session?.user?.role || "user"; 
   const userImage = session?.user?.image;
   const userName = session?.user?.name || "Athlete";
-  const userEmail = session?.user?.email || "";
 
   const linksByRole = {
     admin: [
       { id: "overview", label: "Overview", href: "/dashboard/admin", icon: LayoutDashboard },
       { id: "users", label: "Manage Users", href: "/dashboard/admin/users", icon: Users },
       { id: "applied", label: "Applied Trainers", href: "/dashboard/admin/applied", icon: UserCheck },
+      { id: "manage-trainers", label: "Manage Trainers", href: "/dashboard/admin/manage-trainers", icon: Users },
       { id: "classes", label: "Manage Classes", href: "/dashboard/admin/classes", icon: Dumbbell },
       { id: "forum", label: "Forum Manage", href: "/dashboard/admin/forum", icon: MessageSquare },
       { id: "transactions", label: "Transactions", href: "/dashboard/admin/transactions", icon: CreditCard },
