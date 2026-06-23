@@ -6,6 +6,7 @@ import { Sparkles, Loader2, ArrowLeft } from "lucide-react";
 import Link from "next/link";
 import { applyForTrainer } from "@/lib/action/trainerApply";
 import { authClient } from "@/lib/auth-client";
+import { toast } from "@heroui/react";
 
 export default function TrainerApplicationForm() {
   const router = useRouter();
@@ -48,10 +49,13 @@ export default function TrainerApplicationForm() {
       };
 
       const res = await applyForTrainer(payload);
+      console.log("Application response:", res);
 
       if (res?.success) {
         router.refresh();
         router.push("/dashboard/user/apply");
+      } else {
+        toast.danger(res?.message || "Application failed. Please try again.");
       }
     } catch (error) {
       console.error("Submission failed:", error);
