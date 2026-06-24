@@ -8,6 +8,10 @@ export const getAllForumPosts = async (params = {}) => {
   return await serverFetch(queryString);
 };
 
+export const getAllPostsForAdmin = async () => {
+    return await serverFetch("forum");
+};
+
 export const getForumPostDetails = async (postId) => {
   return await serverFetch(`forum/${postId}`);
 };
