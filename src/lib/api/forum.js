@@ -1,4 +1,4 @@
-import { serverFetch } from "../core/server";
+import { protectedFetch, serverFetch } from "../core/server";
 
 export const getAllForumPosts = async (params = {}) => {
   const { search = "", page = 1, limit = 15 } = params;
@@ -10,4 +10,8 @@ export const getAllForumPosts = async (params = {}) => {
 
 export const getForumPostDetails = async (postId) => {
   return await serverFetch(`forum/${postId}`);
+};
+
+export const getMyForumPosts = async () => {
+    return await protectedFetch("forum/my-posts");
 };

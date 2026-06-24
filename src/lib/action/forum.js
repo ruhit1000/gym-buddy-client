@@ -19,3 +19,7 @@ export const deleteComment = async (commentId) => {
 export const createForumPost = async (postData) => {
     return await serverMutation("forum", "POST", postData);
 };
+
+export const deleteForumPost = async (postId) => {
+    return await serverMutation(`forum/${postId}`, "DELETE", {});
+};
