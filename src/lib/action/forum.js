@@ -15,3 +15,7 @@ export const updateComment = async (commentId, text) => {
 export const deleteComment = async (commentId) => {
     return await serverMutation(`forum/comments/${commentId}`, "DELETE", {});
 };
+
+export const createForumPost = async (postData) => {
+    return await serverMutation("forum", "POST", postData);
+};
