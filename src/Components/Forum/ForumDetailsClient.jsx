@@ -15,7 +15,7 @@ import {
   X,
   Check,
 } from "lucide-react";
-import { Button } from "@heroui/react";
+import { Button, toast } from "@heroui/react";
 import {
   createPostComment,
   togglePostVote,
@@ -66,6 +66,9 @@ export default function ForumDetailsClient({
       if (res?.success && res?.data) {
         setComments((prev) => [...prev, res.data]);
         setCommentText("");
+      }
+      else if (res?.success === false) {
+        toast.danger(res?.message || "Failed to post comment. Please try again.");
       }
     } catch (error) {
       console.error("Failed to post comment:", error);
@@ -233,7 +236,6 @@ export default function ForumDetailsClient({
             {comments.map((comment) => {
               const isCommentOwner =
                 comment.userId?.toString() === currentUserId;
-                console.log("Current User ID:", currentUserId, "Comment User ID:", comment.userId?.toString());
               const isEditing = editingCommentId === comment._id;
 
               return (

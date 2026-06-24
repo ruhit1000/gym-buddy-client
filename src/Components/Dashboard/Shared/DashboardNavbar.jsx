@@ -38,6 +38,7 @@ const DashboardNavbar = ({ children }) => {
       { id: "applied", label: "Applied Trainers", href: "/dashboard/admin/applied", icon: UserCheck },
       { id: "manage-trainers", label: "Manage Trainers", href: "/dashboard/admin/manage-trainers", icon: Users },
       { id: "classes", label: "Manage Classes", href: "/dashboard/admin/classes", icon: Dumbbell },
+      { id: "add-forum", label: "Add Forum Post", href: "/dashboard/admin/add-forum", icon: PlusCircle },
       { id: "forum", label: "Forum Manage", href: "/dashboard/admin/forum", icon: MessageSquare },
       { id: "transactions", label: "Transactions", href: "/dashboard/admin/transactions", icon: CreditCard },
     ],

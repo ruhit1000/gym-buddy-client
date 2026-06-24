@@ -1,4 +1,4 @@
-import DashboardNavbar from '@/Components/Dashboard/Trainer/DashboardNavbar';
+import DashboardNavbar from '@/Components/Dashboard/Shared/DashboardNavbar';
 import React from 'react';
 
 export const metadata = {
