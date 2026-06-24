@@ -7,7 +7,7 @@ import { favouriteToggle } from "@/lib/api/favourites";
 
 export default function BookingCard({ data, isUserFavourite }) {
   const router = useRouter();
-  
+
   const [isFav, setIsFav] = useState(isUserFavourite);
   const [loading, setLoading] = useState(false);
 
@@ -19,12 +19,12 @@ export default function BookingCard({ data, isUserFavourite }) {
   const handleFavouriteToggle = async () => {
     if (loading || !data?._id) return;
     setLoading(true);
-    
-    setIsFav(prev => !prev);
+
+    setIsFav((prev) => !prev);
 
     try {
       const res = await favouriteToggle(data._id);
-      
+
       if (res?.success) {
         setIsFav(res.isFavorited);
         router.refresh();
@@ -92,21 +92,33 @@ export default function BookingCard({ data, isUserFavourite }) {
       </div>
 
       <div className="flex flex-col gap-3">
-        <button
-          disabled={totalSlots > 0 && remainingSlots === 0}
-          className="w-full bg-brand hover:opacity-90 disabled:opacity-40 disabled:pointer-events-none text-background font-heading text-sm font-bold py-3.5 rounded-xl flex items-center justify-center gap-2 transition-all shadow-md cursor-pointer"
-        >
-          {totalSlots > 0 && remainingSlots === 0 ? "Full" : "Book Now"}{" "}
-          <Zap className="size-4" />
-        </button>
-        
+        <form action="/api/checkout_sessions" method="POST">
+          <section>
+            <input type="hidden" name="price" value={data?.price} />
+            <input type="hidden" name="classId" value={data?._id} />
+            <input type="hidden" name="className" value={data?.className} />
+            <input type="hidden" name="trainerName" value={data?.trainerName} />
+            <button
+              type="submit"
+              role="link"
+              disabled={totalSlots > 0 && remainingSlots === 0}
+              className="w-full bg-brand hover:opacity-90 disabled:opacity-40 disabled:pointer-events-none text-background font-heading text-sm font-bold py-3.5 rounded-xl flex items-center justify-center gap-2 transition-all shadow-md cursor-pointer"
+            >
+              {totalSlots > 0 && remainingSlots === 0 ? "Full" : "Book Now"}{" "}
+              <Zap className="size-4" />
+            </button>
+          </section>
+        </form>
+
         {/* Toggle Button Layout */}
-        <button 
+        <button
           onClick={handleFavouriteToggle}
           disabled={loading}
           className="w-full bg-transparent hover:bg-foreground/5 border border-border text-foreground font-heading text-sm font-bold py-3.5 rounded-xl flex items-center justify-center gap-2 transition-all cursor-pointer disabled:opacity-50"
         >
-          <Heart className={`size-4 transition-transform active:scale-75 ${isFav ? "fill-brand text-brand" : ""}`} />
+          <Heart
+            className={`size-4 transition-transform active:scale-75 ${isFav ? "fill-brand text-brand" : ""}`}
+          />
           {isFav ? "Remove From Favorites" : "Add to Favorites"}
         </button>
       </div>
