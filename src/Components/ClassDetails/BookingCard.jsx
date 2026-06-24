@@ -4,9 +4,14 @@ import React, { useState } from "react";
 import { Clock, Users, Star, Heart, Zap } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { favouriteToggle } from "@/lib/api/favourites";
+import { authClient } from "@/lib/auth-client";
+import { toast } from "@heroui/react";
 
 export default function BookingCard({ data, isUserFavourite }) {
   const router = useRouter();
+
+  const { data: session } = authClient.useSession();
+  const isUser = session?.user?.role === "user";
 
   const [isFav, setIsFav] = useState(isUserFavourite);
   const [loading, setLoading] = useState(false);
@@ -15,6 +20,13 @@ export default function BookingCard({ data, isUserFavourite }) {
   const bookingCount = data?.bookingCount || 0;
   const remainingSlots = Math.max(0, totalSlots - bookingCount);
   const targetIntensity = Math.min(5, Math.max(1, data?.intensity || 3));
+
+  const handleBookingSubmit = (e) => {
+    if (!isUser) {
+      e.preventDefault();
+      toast.info("You need a user account to book any session")
+    }
+  }
 
   const handleFavouriteToggle = async () => {
     if (loading || !data?._id) return;
@@ -92,7 +104,7 @@ export default function BookingCard({ data, isUserFavourite }) {
       </div>
 
       <div className="flex flex-col gap-3">
-        <form action="/api/checkout_sessions" method="POST">
+        <form action="/api/checkout_sessions" method="POST" onSubmit={handleBookingSubmit}>
           <section>
             <input type="hidden" name="price" value={data?.price} />
             <input type="hidden" name="classId" value={data?._id} />
