@@ -1,4 +1,4 @@
-# ⚡ Iron Pulse - Elite Performance & Gym Management Platform
+# ⚡ Gym Buddy - Elite Performance & Gym Management Platform
 
 An energetic, high-performance web application designed for fitness enthusiasts, certified personal trainers, and platform administrators. The system enables a seamless, end-to-end orchestration of workout session tracking, automated scheduling, role elevation channels, secure financial transactions, and global community moderation.
 
@@ -8,7 +8,7 @@ An energetic, high-performance web application designed for fitness enthusiasts,
 
 ## 🎯 Project Purpose
 
-The primary mission of **Iron Pulse** is to bridge the gap between dedicated athletes and specialized fitness coaches. By unifying scheduling matrices, interactive community forums, and a multi-tenant dashboard system, it streamlines gym operations while providing recruiters with an immersive demonstration of modern full-stack architecture, clean code practices, and asynchronous data pipelines.
+The primary mission of **Gym Buddy** is to bridge the gap between dedicated athletes and specialized fitness coaches. By unifying scheduling matrices, interactive community forums, and a multi-tenant dashboard system, it streamlines gym operations while providing recruiters with an immersive demonstration of modern full-stack architecture, clean code practices, and asynchronous data pipelines.
 
 ---
 

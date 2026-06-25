@@ -1,4 +1,4 @@
-import { protectedFetch, serverMutation } from "../core/server";
+import { protectedFetch, serverFetch, serverMutation } from "../core/server";
 
 export const getTrainerApplications = async () => {
     return await protectedFetch('applied-trainers');

@@ -8,7 +8,7 @@ import TrainerApprovalsQueue from '@/Components/Dashboard/Admin/TrainerApprovals
 import PopularClassesPanel from '@/Components/Dashboard/Admin/PopularClassesPanel';
 import CommunityPulseControls from '@/Components/Dashboard/Admin/CommunityPulseControls';
 import { Users, Dumbbell, Bookmark } from 'lucide-react';
-import { protectedFetch } from '@/lib/core/server';
+import { getAdminDashboardStats } from '@/lib/api/stats';
 
 const AdminOverviewDashboard = async () => {
     const user = await getUserSession();
@@ -16,7 +16,7 @@ const AdminOverviewDashboard = async () => {
         redirect('/unauthorized');
     }
 
-    const res = await protectedFetch("admin/dashboard-stats");
+    const res = await getAdminDashboardStats();
     const stats = res?.success && res?.data ? res.data : {
         totalUsers: 0,
         totalClasses: 0,
