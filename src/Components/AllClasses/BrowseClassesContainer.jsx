@@ -40,8 +40,7 @@ export default function BrowseClassesContainer({
   };
 
   return (
-    <section className="w-full min-h-screen bg-background text-foreground py-12 px-6 max-w-7xl mx-auto font-sans">
-      {/* Header Panel Controls matching reference block layout */}
+    <section className="w-full min-h-screen bg-background text-foreground py-12 px-4 md:px-6 max-w-7xl mx-auto font-sans transition-colors duration-300">
       <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-12">
         <div className="max-w-xl">
           <h1 className="font-heading font-black text-4xl sm:text-5xl uppercase tracking-tight text-foreground mb-3">
@@ -53,46 +52,59 @@ export default function BrowseClassesContainer({
           </p>
         </div>
 
-        {/* Category Filter Dropdown */}
-        <div className="w-full sm:w-56 shrink-0">
-          <Select
-            placeholder="All Categories"
-            aria-label="Category Filters selection parameters"
-            selectedKeys={new Set([category])}
-            onSelectionChange={(keys) => {
-              const selectedValue = keys.toString() || "";
-              setCategory(selectedValue);
-            }}
-            className="w-full text-foreground text-sm"
-          >
-            <Select.Trigger className="w-full bg-card border border-border rounded-xl p-3 h-11 flex justify-between items-center text-sm text-foreground/60 hover:text-foreground">
-              <Select.Value />
-              <Select.Indicator />
-            </Select.Trigger>
+        <div className="w-full md:w-auto flex flex-col sm:flex-row items-center gap-4 shrink-0">
+          
+          <div className="relative w-full sm:w-64 group">
+            <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 size-4 text-foreground/40 group-focus-within:text-brand transition-colors" />
+            <input
+              type="text"
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
+              placeholder="Search classes by name..."
+              className="w-full h-11 bg-card text-foreground placeholder:text-foreground/40 font-medium border border-border rounded-xl pl-10 pr-4 text-sm focus:outline-none focus:border-brand transition-colors shadow-sm"
+            />
+          </div>
 
-            <Select.Popover className="bg-card border border-border rounded-xl shadow-2xl">
-              <ListBox aria-label="Available Category selections options">
-                <ListBox.Item
-                  id=""
-                  textValue="All Categories"
-                  className="p-2.5 rounded-md text-sm hover:bg-brand hover:text-background cursor-pointer font-medium text-brand"
-                >
-                  All Categories
-                </ListBox.Item>
+          <div className="w-full sm:w-56 shrink-0">
+            <Select
+              placeholder="All Categories"
+              aria-label="Category Filters selection parameters"
+              selectedKeys={new Set([category])}
+              onSelectionChange={(keys) => {
+                const selectedValue = keys.toString() || "";
+                setCategory(selectedValue);
+              }}
+              className="w-full text-foreground text-sm"
+            >
+              <Select.Trigger className="w-full bg-card border border-border rounded-xl p-3 h-11 flex justify-between items-center text-sm text-foreground/60 hover:text-foreground">
+                <Select.Value />
+                <Select.Indicator />
+              </Select.Trigger>
 
-                {availableCategories.map((uniqueCategory) => (
+              <Select.Popover className="bg-card border border-border rounded-xl shadow-2xl">
+                <ListBox aria-label="Available Category selections options">
                   <ListBox.Item
-                    key={uniqueCategory}
-                    id={uniqueCategory}
-                    textValue={uniqueCategory}
-                    className="p-2.5 rounded-md text-sm hover:bg-brand hover:text-background cursor-pointer"
+                    id=""
+                    textValue="All Categories"
+                    className="p-2.5 rounded-md text-sm hover:bg-brand hover:text-background cursor-pointer font-medium text-brand"
                   >
-                    {uniqueCategory}
+                    All Categories
                   </ListBox.Item>
-                ))}
-              </ListBox>
-            </Select.Popover>
-          </Select>
+
+                  {availableCategories.map((uniqueCategory) => (
+                    <ListBox.Item
+                      key={uniqueCategory}
+                      id={uniqueCategory}
+                      textValue={uniqueCategory}
+                      className="p-2.5 rounded-md text-sm hover:bg-brand hover:text-background cursor-pointer text-foreground"
+                    >
+                      {uniqueCategory}
+                    </ListBox.Item>
+                  ))}
+                </ListBox>
+              </Select.Popover>
+            </Select>
+          </div>
         </div>
       </div>
 

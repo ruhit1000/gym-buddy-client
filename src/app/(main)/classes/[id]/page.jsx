@@ -6,11 +6,13 @@ import ClassOverview from "@/Components/ClassDetails/ClassOverview";
 import { getUserSession } from "@/lib/core/session";
 import { redirect } from "next/navigation";
 import { isFavourite } from "@/lib/api/favourites";
+import { hasUserBookedClass } from "@/lib/api/bookings";
 
 const ClassDetailsPage = async ({ params }) => {
   const { id } = await params;
   const res = await getClassById(id);
   const user = await getUserSession();
+  const hasBooked = await hasUserBookedClass(id);
 
   if (!user) {
     return redirect(`/login?redirectTo=/classes/${id}`);
@@ -30,7 +32,7 @@ const ClassDetailsPage = async ({ params }) => {
             <ClassOverview data={classData} />
           </div>
           <div className="lg:col-span-1 relative">
-            <BookingCard data={classData} isUserFavourite={isUserFavourite.isFavorited} />
+            <BookingCard data={classData} isUserFavourite={isUserFavourite.isFavorited} hasBooked={hasBooked.hasBooked} />
           </div>
         </div>
       </div>

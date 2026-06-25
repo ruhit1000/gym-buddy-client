@@ -7,7 +7,7 @@ import { favouriteToggle } from "@/lib/api/favourites";
 import { authClient } from "@/lib/auth-client";
 import { toast } from "@heroui/react";
 
-export default function BookingCard({ data, isUserFavourite }) {
+export default function BookingCard({ data, isUserFavourite, hasBooked }) {
   const router = useRouter();
 
   const { data: session } = authClient.useSession();
@@ -21,12 +21,20 @@ export default function BookingCard({ data, isUserFavourite }) {
   const remainingSlots = Math.max(0, totalSlots - bookingCount);
   const targetIntensity = Math.min(5, Math.max(1, data?.intensity || 3));
 
+  const isButtonDisabled = (totalSlots > 0 && remainingSlots === 0) || hasBooked;
+
   const handleBookingSubmit = (e) => {
     if (!isUser) {
       e.preventDefault();
-      toast.info("You need a user account to book any session")
+      toast.info("You need a user account to book any session");
+      return;
     }
-  }
+
+    if (hasBooked) {
+      e.preventDefault();
+      toast.error("You have already booked this class");
+    }
+  };
 
   const handleFavouriteToggle = async () => {
     if (loading || !data?._id) return;
@@ -39,6 +47,7 @@ export default function BookingCard({ data, isUserFavourite }) {
 
       if (res?.success) {
         setIsFav(res.isFavorited);
+        toast.success(res.isFavorited ? "Added to favorites" : "Removed from favorites");
         router.refresh();
       } else {
         setIsFav(isUserFavourite);
@@ -113,16 +122,20 @@ export default function BookingCard({ data, isUserFavourite }) {
             <button
               type="submit"
               role="link"
-              disabled={totalSlots > 0 && remainingSlots === 0}
-              className="w-full bg-brand hover:opacity-90 disabled:opacity-40 disabled:pointer-events-none text-background font-heading text-sm font-bold py-3.5 rounded-xl flex items-center justify-center gap-2 transition-all shadow-md cursor-pointer"
+              disabled={isButtonDisabled}
+              className="w-full bg-brand hover:opacity-90 disabled:opacity-40 disabled:pointer-events-none text-background font-heading text-sm font-bold py-3.5 rounded-xl flex items-center justify-center gap-2 transition-all shadow-md cursor-pointer uppercase tracking-wider"
             >
-              {totalSlots > 0 && remainingSlots === 0 ? "Full" : "Book Now"}{" "}
+              {hasBooked 
+                ? "Already Booked" 
+                : totalSlots > 0 && remainingSlots === 0 
+                ? "Full" 
+                : "Book Now"
+              }
               <Zap className="size-4" />
             </button>
           </section>
         </form>
 
-        {/* Toggle Button Layout */}
         <button
           onClick={handleFavouriteToggle}
           disabled={loading}
