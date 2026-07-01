@@ -2,7 +2,7 @@
 
 An energetic, high-performance web application designed for fitness enthusiasts, certified personal trainers, and platform administrators. The system enables a seamless, end-to-end orchestration of workout session tracking, automated scheduling, role elevation channels, secure financial transactions, and global community moderation.
 
-**🌐 Live Deployment:** [Live Site Link](https://b13-a10-frontend.vercel.app/)
+**🌐 Live Deployment:** [Live Site Link](https://gym-buddy-client.vercel.app/)
 
 ---
 

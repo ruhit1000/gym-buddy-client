@@ -1,3 +1,4 @@
+export const dynamic = 'force-dynamic';
 import React from 'react';
 import { getServerUser } from '@/lib/core/session';
 import { Hourglass, XCircle, Sparkles, MessageSquare } from 'lucide-react';

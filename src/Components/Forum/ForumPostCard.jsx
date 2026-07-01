@@ -8,23 +8,20 @@ import { MessageSquare, ThumbsUp, ArrowRight } from 'lucide-react';
 export default function ForumPostCard({ post }) {
     const isTrainer = post.authorRole === "trainer";
 
+    const fallbackImage = "https://images.unsplash.com/photo-1541534741688-6078c6bfb5c5?w=800&auto=format&fit=crop&q=60";
+
     return (
         <div className="group flex flex-col bg-card border border-border hover:border-border-hover rounded-2xl overflow-hidden shadow-sm transition-all duration-300">
             <div className="relative w-full aspect-16/10 bg-muted overflow-hidden">
-                {post.image ? (
-                    <Image 
-                        src={post.image} 
-                        alt={post.title}
-                        fill
-                        sizes="(max-w-768px) 100vw, 33vw"
-                        className="object-cover group-hover:scale-105 transition-transform duration-500"
-                    />
-                ) : (
-                    <div className="w-full h-full flex items-center justify-center text-foreground/20">
-                        No Image Available
-                    </div>
-                )}
-                <span className={`absolute left-4 top-4 text-[10px] font-black uppercase tracking-wider px-2.5 py-1 rounded-md shadow-sm border ${
+                <Image 
+                    src={post.image || fallbackImage} 
+                    alt={post.title || "Fitness workout session log"}
+                    fill
+                    sizes="(max-w-768px) 100vw, 33vw"
+                    className="object-cover group-hover:scale-105 transition-transform duration-500"
+                    priority={false}
+                />
+                <span className={`absolute left-4 top-4 text-[10px] font-black uppercase tracking-wider px-2.5 py-1 rounded-md shadow-sm border z-10 ${
                     isTrainer 
                         ? "bg-brand text-background border-brand" 
                         : "bg-emerald-500/90 text-white border-emerald-600"
@@ -41,9 +38,9 @@ export default function ForumPostCard({ post }) {
 
                 <div className="flex items-center gap-2 mb-4">
                     <div className="size-6 bg-foreground/10 text-foreground flex items-center justify-center text-xs font-black rounded-md uppercase">
-                        {post.authorName?.charAt(0)}
+                        {post.authorName?.charAt(0) || "P"}
                     </div>
-                    <span className="text-xs font-bold text-foreground/80">{post.authorName}</span>
+                    <span className="text-xs font-bold text-foreground/80">{post.authorName || "Anonymous Staff"}</span>
                 </div>
 
                 <p className="text-sm text-foreground/60 leading-relaxed line-clamp-3 mb-6 flex-1">

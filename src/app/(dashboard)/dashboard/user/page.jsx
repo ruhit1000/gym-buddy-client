@@ -1,3 +1,4 @@
+export const dynamic = 'force-dynamic';
 import React from 'react';
 import { getUserDashboardStats } from '@/lib/api/stats';
 import DashboardHeader from '@/Components/Dashboard/User/DashboardHeader';

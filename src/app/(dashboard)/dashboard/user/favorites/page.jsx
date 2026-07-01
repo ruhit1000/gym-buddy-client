@@ -1,3 +1,4 @@
+export const dynamic = 'force-dynamic';
 import React from "react";
 import { getUserFavourites } from "@/lib/api/favourites";
 import FavoriteClassCard from "@/Components/Dashboard/User/FavoriteClassCard";

@@ -1,3 +1,4 @@
+export const dynamic = 'force-dynamic';
 import React from 'react';
 import { getAllTrainers } from '@/lib/api/trainerApplication';
 import TrainersTable from '@/Components/Dashboard/Admin/TrainersTable';

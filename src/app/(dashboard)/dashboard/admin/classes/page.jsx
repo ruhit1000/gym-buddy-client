@@ -1,3 +1,4 @@
+export const dynamic = 'force-dynamic';
 import React from 'react';
 import ManageClassesTable from '@/Components/Dashboard/Admin/ManageClassesTable';
 import { getSubmittedClasses } from '@/lib/api/classes';
